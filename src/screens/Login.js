@@ -13,21 +13,22 @@ export default class Login extends Component {
     }
   }
 
-    login(email, password) {
-      auth.signInWithEmailAndPassword(email, password)
-        .then(response => {
-          this.props.navigation.navigate('HomeMenu')
-          this.setState({ registered: true });
-        })
-        .catch(error => {
-          this.setState({ error: 'Fallo en el registro.' })
-        })
-    }
-  
+  login(email, password) {
+    auth.signInWithEmailAndPassword(email, password)
+      .then(response => {
+        this.props.navigation.navigate('HomeMenu')
+        this.setState({ registered: true });
+      })
+      .catch(error => {
+        this.setState({ error: 'Fallo en el registro.' })
+      })
+  }
+
   render() {
     return (
-      <View>
-        
+      <View style={styles.container}>
+
+        <Text style={styles.title}>¡Iniciar Sesion!</Text>
 
         <TextInput style={styles.field}
           keyboardType='email-address'
@@ -43,57 +44,59 @@ export default class Login extends Component {
           value={this.state.password} />
 
         <TouchableOpacity onPress={() => this.login(this.state.email, this.state.password)}>
-          <Text style={styles.field}> Login </Text>
+          <Text style={styles.button}> Login </Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
-          <Text style={styles.cuenta}> No tienes cuenta? Crear Cuenta </Text>
+          <Text style={styles.loginLink}> No tienes cuenta? Crear Cuenta </Text>
         </TouchableOpacity>
 
-        
+
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  field: {
+  container: {
     flex: 1,
-    padding: 15, // Ajustado para dar un aspecto más elegante
-    backgroundColor: "#f0f0f0", // Color de fondo más claro y moderno
     justifyContent: "center",
-    fontSize: 20, // Tamaño de fuente consistente
-    fontWeight: "600", // Peso de fuente más sutil
-    marginBottom: 15, // Espacio entre elementos más pequeño
-    textAlign: "center",
-    borderRadius: 10, // Bordes redondeados
-    borderBottomWidth: 1,
-    borderBottomColor: "#bbb", // Color de borde más suave
-    shadowColor: "#000", // Agregando sombra
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3, // Sombra en Android
+    alignItems: "center",
+    padding: 20,
   },
-
-  cuenta: {
-    flex: 1,
-    padding: 15,
-    color: "#f5f5f5", // Color de texto más claro para contraste
-    backgroundColor: "#333", // Fondo más sutil que negro puro
-    justifyContent: "center",
-    fontSize: 20,
-    fontWeight: "600",
-    marginBottom: 15,
-    textAlign: "center",
-    borderRadius: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#666", // Borde con más contraste
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 3,
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "rgb(90, 90, 90)",
+  },
+  field: {
+    width: "100%",
+    padding: 10,
+    borderWidth: 1,
+    margin: 7,
+    borderColor: "gray",
+    borderRadius: 8,
+    backgroundColor: "white",
+  },
+  button: {
+    backgroundColor: "rgb(60, 60, 60)",
+    color: 'white',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20,
+    width: "100%",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  loginLink: {
+    color: "rgb(60, 60, 60)",
+    marginTop: 20,
+    textDecorationLine: "underline",
   },
 });
 
