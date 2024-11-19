@@ -9,10 +9,27 @@ export default class Register extends Component {
             user: "",
             email: "",
             password: "",
+            error: "",
         };
     }
 
     register(email, password, user) {
+        if (!email) {
+            this.setState({ error: "El campo de correo electrónico está vacío." });
+            return;
+        }
+
+        if (!password) {
+            this.setState({ error: "El campo de contraseña está vacío." });
+            return;
+        }
+
+        if (!user) {
+            this.setState({ error: "El campo de nombre de usuario está vacío." });
+            return;
+        }
+
+
         auth.createUserWithEmailAndPassword(email, password)
             .then(response => {
                 db.collection("users")
@@ -26,7 +43,7 @@ export default class Register extends Component {
                     });
             })
             .catch(error => {
-                this.setState({ error: "Fallo en el registro." });
+                this.setState({ error: "Hubo una falla al registrar al usuario." });
             });
     }
 
@@ -57,6 +74,10 @@ export default class Register extends Component {
                     onChangeText={text => this.setState({ password: text })}
                     value={this.state.password}
                 />
+
+                {this.state.error ? (
+                    <Text style={styles.error}>{this.state.error}</Text>
+                ) : null}
 
                 <TouchableOpacity
                     style={styles.button}
