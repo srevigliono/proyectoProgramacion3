@@ -9,18 +9,30 @@ export default class Login extends Component {
     super();
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: "",
     }
   }
 
   login(email, password) {
+
+    if (!email) {
+      this.setState({ error: "El campo de correo electrónico está vacío." });
+      return;
+    }
+
+    if (!password) {
+      this.setState({ error: "El campo de contraseña está vacío." });
+      return;
+    }
+
     auth.signInWithEmailAndPassword(email, password)
       .then(response => {
         this.props.navigation.navigate('HomeMenu')
         this.setState({ registered: true });
       })
       .catch(error => {
-        this.setState({ error: 'Fallo en el registro.' })
+        this.setState({ error: 'Fallo en el inicio de sesión.' })
       })
   }
 
@@ -42,6 +54,10 @@ export default class Login extends Component {
           secureTextEntry={true}
           onChangeText={text => this.setState({ password: text })}
           value={this.state.password} />
+
+        {this.state.error ? (
+          <Text style={styles.error}>{this.state.error}</Text>
+        ) : null}
 
         <TouchableOpacity onPress={() => this.login(this.state.email, this.state.password)}>
           <Text style={styles.button}> Login </Text>
@@ -98,5 +114,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textDecorationLine: "underline",
   },
+  error: {
+    color: "red"
+  }
 });
+
 
