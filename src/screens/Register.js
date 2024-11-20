@@ -138,4 +138,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textDecorationLine: "underline",
     },
+    error: {
+        color: 'red',
+        textAlign: 'center',
+    },
 });
