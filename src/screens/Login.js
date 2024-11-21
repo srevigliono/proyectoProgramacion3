@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text, TextInput, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, Text, TextInput, StyleSheet, Switch  } from 'react-native'
 import { auth } from '../firebase/config';
 
 
@@ -34,6 +34,14 @@ export default class Login extends Component {
       .catch(error => {
         this.setState({ error: 'Fallo en el inicio de sesión.' })
       })
+  }
+
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.props.navigation.navigate("HomeMenu");
+      }
+    });
   }
 
   render() {
