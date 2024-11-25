@@ -21,10 +21,12 @@ export default class NewPost extends Component {
         }
 
         db.collection("posts")
+        
             .add({
                 text: texto,
                 user: auth.currentUser.email,
                 createdAt: Date.now(),
+                likes: []
                 //preguntar el lunes si usamos date.now para fechas
             })
             .then(() => {

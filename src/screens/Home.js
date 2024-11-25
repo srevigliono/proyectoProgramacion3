@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { db } from '../firebase/config';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { auth, db } from '../firebase/config';
+import firebase from 'firebase';
+import Post from '../components/Post';
 
 export default class HomeMenu extends Component {
   constructor(props) {
@@ -15,11 +17,12 @@ export default class HomeMenu extends Component {
     this.setState({ loading: true });
 
     db.collection('posts')
-      .orderBy('createdAt')
+      .orderBy('createdAt', 'desc')
       .onSnapshot((docs) => {
         let posts = [];
         docs.forEach((doc) => {
           posts.push({
+            id: doc.id, 
             data: doc.data(),
           });
         });
@@ -29,7 +32,7 @@ export default class HomeMenu extends Component {
         });
       });
   }
-
+ 
   render() {
     return (
       <View style={styles.container}>
@@ -38,15 +41,8 @@ export default class HomeMenu extends Component {
         {!this.state.loading && (
           <FlatList
             data={this.state.posts}
-            renderItem={({ item }) => (
-              <View style={styles.postContainer}>
-                <Text style={styles.postText}>{item.data.text}</Text>
-                <Text style={styles.postUser}>{item.data.user}</Text>
-                <Text style={styles.postDate}>
-                {new Date(item.data.createdAt).toLocaleString()}
-                </Text>
-              </View>
-            )}
+            renderItem={({item}) => <Post item={item} />}
+            keyExtractor={(item) => item.id} 
           />
         )}
       </View>
@@ -88,5 +84,24 @@ const styles = StyleSheet.create({
   postDate: {
     fontSize: 14,
     color: '#888',
+  },
+  likesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  likesCount: {
+    fontSize: 16,
+    marginRight: 15,
+    color: '#333',
+  },
+  likeButton: {
+    padding: 5,
+    backgroundColor: '#0066cc',
+    borderRadius: 5,
+  },
+  likeButtonText: {
+    color: '#fff',
+    fontSize: 14,
   },
 });
